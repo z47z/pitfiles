@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2012/Peach /peach/peach.xsd">
+
+
+
+<DataModel name="LLC">
+    <Number name="DSAP" value="fe" valueType="hex" size="8" signed="false" mutable="false"/>
+    <Number name="SSAP" value="fe" valueType="hex" size="8" signed="false" mutable="false"/>
+    <Number name="Control_Field" value="03" valueType="hex" size="8" signed="false" mutable="false"/>
+</DataModel>
+
+<DataModel name="Intradomain_Routeing_Protocol"> 
+    <Number name="intradomain_routeing_protocol_discriminator " value="83" valueType="hex" size="8" signed="false" mutable="false"/>
+    <Number name="length_indicator" value="1b" valueType="hex" size="8" signed="false" mutable="false"/>
+    <Number name="version_protocol_id_extension" value="01" valueType="hex" size="8" signed="false" mutable="false"/>
+    <Number name="id_length" value="00" valueType="hex" size="8" signed="false" mutable="false"/>
+    <Number name="three_r_pud_type" value="0f" valueType="hex" size="8" signed="false" mutable="false"/>
+    <Number name="version" value="01" valueType="hex" size="8" signed="false" mutable="false"/>
+    <Number name="reserved" value="00" valueType="hex" size="8" signed="false" mutable="false"/>
+    <Number name="maximum_area_address" value="00" valueType="hex" size="8" signed="false" mutable="false"/>
+</DataModel>
+
+<DataModel name="Hello"> 
+    <Block name="TLV"> 
+        <Block name="TLV1"> 
+            <Number name="type" value="81" valueType="hex"  size="8" signed="false"/>
+            <Number name="length"  valueType="hex"  size="8" signed="false">
+                <Relation type="size" of="nlpid"/> 
+            </Number>
+            <Number name="nlpid" value="cc" valueType="hex"  size="8" signed="false"/>
+        </Block> 
+        <Block name="TLV2"> 
+            <Number name="type" value="01" valueType="hex"  size="8" signed="false"/>
+            <Number name="length"  valueType="hex"  size="8" signed="false">
+                <Relation type="size" of="area_address"/> 
+            </Number>
+            <Number name="area_address" value="03 49 00 01" size="32" valueType="hex"  signed="false"/>
+        </Block> 
+        <Block name="TLV3"> 
+            <Number name="type" value="06" valueType="hex"  size="8" signed="false"/>
+            <Number name="length"  valueType="hex"  size="8" signed="false">
+                <Relation type="size" of="is_neighbor"/> 
+            </Number>
+            <!-- <Number name="is_neighbor" value="08 00 27 b1 94 5e" size="48" valueType="hex" signed="false"/>  -->
+            <Number name="is_neighbor" value="08 00 27 b1 34 57" size="48" valueType="hex" signed="false"/>
+        </Block> 
+        <Block name="TLV4"> 
+            <Number name="type" value="84" valueType="hex"  size="8" signed="false"/>
+            <Number name="length"  valueType="hex"  size="8" signed="false">
+                <Relation type="size" of="IPv4_Interface_address"/> 
+            </Number>
+            <Number name="IPv4_Interface_address" value="c0 a8 04 6e" size="32" valueType="hex" signed="false"/>
+        </Block>
+        <!-- <Block name="padding1"  occurs="5"> 
+            <Number name="type" value="08" valueType="hex"  size="8" signed="false"/>
+            <Block name="pad">
+                <Number name="length" value="ff" valueType="hex"  size="8" signed="false"/>
+                <Padding alignment="7"/>
+            </Block> 
+        </Block>  -->
+    </Block>     
+</DataModel>
+
+
+<DataModel name="HelloHeader" ref="Intradomain_Routeing_Protocol"> 
+    <Number name="reserved_circuit_type" value="03" valueType="hex" size="8" signed="false" mutable="false"/>
+    <Number name="system_id_src" value="00 10 01 00 10 01" valueType="hex" size="48" signed="false"/>
+    <Number name="holding_time" value="00 1e" valueType="hex" size="16" signed="false"/>
+    <Number name="PDU_length"  valueType="hex" size="16" signed="false" endian="big">
+        <Relation type="size" of="HelloHeader"/>
+    </Number>    
+    <Number name="R_priority" value="40" valueType="hex" size="8" signed="false"/>
+    <Number name="system_id_dst" value="00 20 02 00 20 02 00" valueType="hex" size="56" signed="false"/>
+    <Block name="HelloPayload" ref="Hello"/>
+</DataModel>
+
+<DataModel name="ISISHello"> 
+    <Block name="llc" ref="LLC"/>
+    <Block name="content" ref="HelloHeader"/>
+</DataModel>
+
+
+<DataModel name="EtherRaw">
+    <!-- <Number name="dst" value="01 80 c2 00 00 14" valueType="hex" size="48" signed="false" mutable="false"/> -->
+    <Number name="dst" value="08 00 27 b1 34 57" valueType="hex" size="48" signed="false" mutable="false"/>
+    <Number name="src" value="08 00 27 72 94 5e" valueType="hex" size="48" signed="false" mutable="false"/>
+    <Number name="length" valueType="hex" size="16" signed="false" mutable="false" endian="big">
+        <Relation type="size" of="payload"/>
+    </Number>    
+    <Block name="payload" ref="ISISHello"/>
+</DataModel>
+
+
+<StateModel name="TheState" initialState = "initial">
+        <State name="initial">
+                <Action type="output">
+                    <DataModel ref="EtherRaw"/>
+                </Action>
+        </State>
+</StateModel>
+
+<Test name="Default">
+        <StateModel ref="TheState"/>
+        <Publisher class="RawEther">
+                 <Param name="Interface" value="enp0s10" />
+        </Publisher>
+        <Logger class="File">
+            <Param name="Path" value="\home\zz\peach\logs"/>
+        </Logger>
+       <!-- <Strategy class="Random"/> -->
+</Test>
+</Peach>

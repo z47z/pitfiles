@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2012/Peach /peach/peach.xsd">
+
+<DataModel name="Bgp_Open">
+    <Block name= "marker"  occurs="16"> 
+        <Number name="markeru" value="ff" valueType="hex"  size="8" signed="false"/>
+    </Block>     
+    <Number name="length" size="16" signed="false" endian="big">
+        <Relation type="size" of="Bgp_Open"/>
+    </Number>
+    <!-- <Number name="length" value= size="128" signed="false"/>  -->
+    <Number name="type" value="1" size="8" signed="false"/> 
+    <Number name="version" value="4" size="8" signed="false"/> 
+    <Number name="my_as" value="65006"  size="16" signed="false" mutable="false" endian="big"/> 
+    <Number name="hold_time" value="180" size="16" signed="false" endian="big"/> 
+    <Number name="bgp_id" value="02 02 02 02" valueType="hex" size="32" signed="false"  mutable="false"/> 
+    <Number name="opt_param_len" value="60" size="8" signed="false" mutable="false"/> 
+    <Block name= "op"> 
+        <Number name="op1type" value="2" size="8" signed="false"/> 
+        <Number name="op1len" value="6" size="8" signed="false"/> 
+        <Number name="op1x" value="01 04 00 01" valueType="hex" size="32" signed="false" endian="big"/> 
+        <Number name="op1xx" value="00 01" valueType="hex" size="16" signed="false" endian="big"/> 
+        <Number name="op2type" value="2" size="8" signed="false"/> 
+        <Number name="op2len" value="2" size="8" signed="false"/> 
+        <Number name="op2xx" value="80 00" valueType="hex" size="16" signed="false" endian="big"/> 
+        <Number name="op3type" value="2" size="8" signed="false"/> 
+        <Number name="op3len" value="2" size="8" signed="false"/> 
+        <Number name="op3xx" value="02 00" valueType="hex" size="16" signed="false" endian="big"/> 
+        <Number name="op4type" value="2" size="8" signed="false"/> 
+        <Number name="op4len" value="2" size="8" signed="false"/> 
+        <Number name="op4xx" value="46 00" valueType="hex" size="16" signed="false" endian="big"/> 
+        <Number name="op5type" value="2" size="8" signed="false"/> 
+        <Number name="op5len" value="6" size="8" signed="false"/> 
+        <Number name="op5x" value="41 04 00 00" valueType="hex" size="32" signed="false" endian="big"/> 
+        <Number name="op5xx" value="65006"  size="16" signed="false" endian="big"/> 
+        <Number name="op6type" value="2" size="8" signed="false"/> 
+        <Number name="op6len" value="2" size="8" signed="false"/> 
+        <Number name="op6xx" value="06 00" valueType="hex" size="16" signed="false" endian="big"/> 
+        <Number name="op7type" value="2" size="8" signed="false"/> 
+        <Number name="op7len" value="6" size="8" signed="false"/> 
+        <Number name="op7x" value="45 04 00 01" valueType="hex" size="32" signed="false" endian="big"/> 
+        <Number name="op7xx" value="01 01" valueType="hex" size="16" signed="false" endian="big"/>  
+        <Number name="op8type" value="2" size="8" signed="false"/> 
+        <Number name="op8len" value="12" size="8" signed="false"/> 
+        <Number name="op8t" value="73" size="8" signed="false"/> 
+        <Number name="op8l" value="0a 08" valueType="hex" size="16" signed="false" endian="big"/>  
+        <String name="op8" value="wingfuzz"/> 
+        <Number name="op8ll" value="0" size="8" signed="false"/> 
+        <Number name="op9type" value="2" size="8" signed="false"/> 
+        <Number name="op9len" value="4" size="8" signed="false"/> 
+        <Number name="op9x" value="40 02 00 78" valueType="hex" size="32" signed="false" endian="big"/>  
+    </Block> 
+</DataModel>
+
+<DataModel name="Bgp_KeepAlive">
+    <Block name= "marker"  occurs="16"> 
+        <Number name="markeru" value="ff" valueType="hex"  size="8" signed="false"/>
+    </Block> 
+    <Number name="length" size="16" signed="false" endian="big">
+        <Relation type="size" of="Bgp_KeepAlive"/>
+    </Number>
+    <Number name="type" value="4" size="8" signed="false"/> 
+</DataModel>
+
+<DataModel name="Bgp_Notification">
+    <Block name= "marker"  occurs="16"> 
+        <Number name="markeru" value="ff" valueType="hex"  size="8" signed="false"/>
+    </Block> 
+    <Number name="length" size="16" signed="false" endian="big">
+        <Relation type="size" of="Bgp_Notification"/>
+    </Number>
+    <Number name="type" value="3" size="8" signed="false"/> 
+    <Number name="major_code" value="6" size="8" signed="false"/> 
+    <Number name="minor_code" value="2" size="8" signed="false"/> 
+</DataModel>
+
+<DataModel name="Bgp_Update">
+    <Block name= "marker"  occurs="16"> 
+        <Number name="markeru" value="ff" valueType="hex"  size="8" signed="false"/>
+    </Block>  
+    <Number name="length" size="16" signed="false" endian="big">
+        <Relation type="size" of="Bgp_Update"/>
+    </Number>
+    <Number name="type" value="2" size="8" signed="false"/> 
+    <Number name="withdrawn_length" value="0" size="16" signed="false"/>
+    <Number name="pathattribute_length" value="0" size="16" signed="false"/>
+          <!-- <Relation type="size" of="PathAttribute"/>
+    </Number>
+    <Block name= "PathAttribute"> 
+        <Flags name="options" size="8">
+                <Flag name="optional" position="0" size="1" value="0" />
+                <Flag name="transitive" position="1" size="1" value="1"/>
+                <Flag name="partial" position="2" size="1" value="0" />
+                <Flag name="length" position="3" size="1" value="0" />
+                <Flag name="f4" position="4" size="1" value="0" />
+                <Flag name="f5" position="5" size="1" value="0"/>
+                <Flag name="f6" position="6" size="1" value="0" />
+                <Flag name="f7" position="7" size="1" value="0" />
+        </Flags>
+        <Number name="type_code" value="2" size="8" signed="false"/>   
+        <Number name="plength" size="8" signed="false">
+                <Relation type="size" of="as_seg"/>
+        </Number>
+        <Block name= "as_seg"> 
+             <Number name="seg_type" value="2" size="8" signed="false"/> 
+             <Number name="seg_length" size="8" signed="false">
+                <Relation type="size" of="ass"/>
+             </Number>
+             <Number name="ass" size="32" signed="false"/>      
+        </Block> 
+    </Block>  -->
+</DataModel>
+
+
+<StateModel name="TheState" initialState = "initial">
+        <State name="initial">
+                <Action type="input">
+                        <DataModel ref="Bgp_Open"/>
+                </Action>
+                <Action type="output">
+                        <DataModel ref="Bgp_Open"/>
+                </Action>
+                <Action type="input">
+                        <DataModel ref="Bgp_KeepAlive"/>
+                </Action>
+                <Action type="output">
+                        <DataModel ref="Bgp_KeepAlive"/>
+                </Action>
+                <Action type="output">
+                        <DataModel ref="Bgp_Update"/>
+                </Action>
+                <Action type="input">
+                        <DataModel ref="Bgp_Update"/>
+                </Action>
+                <Action type="output">
+                        <DataModel ref="Bgp_Notification"/>
+                </Action>
+        </State>
+</StateModel>
+
+<Test name="Default">
+        <StateModel ref="TheState"/>
+
+        <Publisher class="TcpClient">
+                <Param name="Host" value="##HOST##" />
+                <Param name="Port" value="179" />
+        </Publisher>
+        <Logger class="File">
+            <Param name="Path" value="/home/zz/peach/ftplogs"/>
+        </Logger>
+       <Strategy class="Random" />
+</Test>
+</Peach>
+
+
