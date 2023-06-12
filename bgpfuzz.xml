@@ -138,9 +138,15 @@
         </State>
 </StateModel>
 
+<Agent name="LocalPing">
+        <Monitor class="Ping">
+                <Param name="Host" value="##HOST##" />
+        </Monitor>
+</Agent>
+
 <Test name="Default">
         <StateModel ref="TheState"/>
-
+        <Agent ref="LocalPing"/>
         <Publisher class="TcpClient">
                 <Param name="Host" value="##HOST##" />
                 <Param name="Port" value="##PORT##" />
@@ -151,5 +157,8 @@
        <Strategy class="Random" />
 </Test>
 </Peach>
+
+
+
 
 

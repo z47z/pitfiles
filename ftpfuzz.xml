@@ -5,11 +5,11 @@
   <!--     Data Models      -->
   <!--                      --> 
   <DataModel name="DDataUSER">
-    <String value="USER joe\r\n"/>
+    <String value="USER ##USER##\r\n"/>
   </DataModel>
   
   <DataModel name="DDataPASS">
-    <String value="PASS mypwd\r\n"/>
+    <String value="PASS ##PASSWORD##\r\n"/>
   </DataModel>
   
   <!-- <DataModel name="DDataPORT">
@@ -46,14 +46,14 @@
   <!-- USER [username]: login with the specified username -->
   <DataModel name="DataUSER">
     <String value="USER "/>
-    <String value="joe"/>
+    <String value="##USER##"/>
     <String value="\r\n"/>
   </DataModel>
 
   <!-- PASS [password]: login with the specified password -->
   <DataModel name="DataPASS">
     <String value="PASS "/>
-    <String value="mypwd"/>
+    <String value="##PASSWORD##"/>
     <String value="\r\n"/>
   </DataModel>
 
@@ -190,7 +190,11 @@
 
 
 
-
+<Agent name="Local">
+        <Monitor class="Ping">
+                <Param name="Host" value="##HOST##" />
+        </Monitor>
+</Agent>
  
 
 
@@ -199,9 +203,10 @@
   
   <Test name="Default">
     <StateModel ref="StateEPSV"/>
+    <Agent ref="Local"/>
     <Publisher class="TcpClient">
-      <Param name="Host" value="192.168.4.110"/>
-      <Param name="Port" value="21"/>
+      <Param name="Host" value="##HOST##"/>
+      <Param name="Port" value="##PORT##"/>
     </Publisher>
     <Logger class="File">
         <Param name="Path" value="/home/zz/peach/ftplogs"/>
