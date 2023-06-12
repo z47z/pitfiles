@@ -1,0 +1,7 @@
+依靠python的time.sleep(n seconds)实现状态暂停
+以bgpfuzz为例
+在pit file开头（line4，5）添加元素PythonPath与Import
+PythonPath为python可执行文件位置 Import同python中的import，导入所需模块，这里导入time。
+
+StateModel中的Action元素具有两个属性：onStart与onComplete，代表在Action执行前，后会去分别执行的回调函数。
+比如若在发送KeepAlive包之前暂停3s中，则在对应的Action中添加属性onStart（line129） value为time.sleep(3)。

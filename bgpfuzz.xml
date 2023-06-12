@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2012/Peach /peach/peach.xsd">
 
+<PythonPath path="/usr/bin/python3"/>
+<Import import="time"/>
+
 <DataModel name="Bgp_Open">
     <Block name= "marker"  occurs="16"> 
         <Number name="markeru" value="ff" valueType="hex"  size="8" signed="false"/>
@@ -123,8 +126,8 @@
                 <Action type="input">
                         <DataModel ref="Bgp_KeepAlive"/>
                 </Action>
-                <Action type="output">
-                        <DataModel ref="Bgp_KeepAlive"/>
+                <Action type="output" onStart="time.sleep(3)">
+                        <DataModel ref="Bgp_KeepAlive" />
                 </Action>
                 <Action type="output">
                         <DataModel ref="Bgp_Update"/>
