@@ -1,0 +1,8 @@
+1. .config文件的name与description属性在使用中没有实际作用
+2. .config文件的key属性的值会被填写在.xml文件中的对应位置（14，35，145，146行）
+3. 在命令行启动时，通过-DKEY=<value>来定义这些key值 （注意这里的-DKEY中的key依旧与.config文件的key属性的值对应）
+
+mono Peach.exe --debug -DHOST=192.168.4.110 -DPORT=179 -DAS=65006 pits/Net/bgpfuzz.xml
+
+
+

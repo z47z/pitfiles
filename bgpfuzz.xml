@@ -11,7 +11,7 @@
     <!-- <Number name="length" value= size="128" signed="false"/>  -->
     <Number name="type" value="1" size="8" signed="false"/> 
     <Number name="version" value="4" size="8" signed="false"/> 
-    <Number name="my_as" value="65006"  size="16" signed="false" mutable="false" endian="big"/> 
+    <Number name="my_as" value="##AS##"  size="16" signed="false" mutable="false" endian="big"/> 
     <Number name="hold_time" value="180" size="16" signed="false" endian="big"/> 
     <Number name="bgp_id" value="02 02 02 02" valueType="hex" size="32" signed="false"  mutable="false"/> 
     <Number name="opt_param_len" value="60" size="8" signed="false" mutable="false"/> 
@@ -32,7 +32,7 @@
         <Number name="op5type" value="2" size="8" signed="false"/> 
         <Number name="op5len" value="6" size="8" signed="false"/> 
         <Number name="op5x" value="41 04 00 00" valueType="hex" size="32" signed="false" endian="big"/> 
-        <Number name="op5xx" value="65006"  size="16" signed="false" endian="big"/> 
+        <Number name="op5xx" value="##AS##"  size="16" signed="false" endian="big"/> 
         <Number name="op6type" value="2" size="8" signed="false"/> 
         <Number name="op6len" value="2" size="8" signed="false"/> 
         <Number name="op6xx" value="06 00" valueType="hex" size="16" signed="false" endian="big"/> 
@@ -143,7 +143,7 @@
 
         <Publisher class="TcpClient">
                 <Param name="Host" value="##HOST##" />
-                <Param name="Port" value="179" />
+                <Param name="Port" value="##PORT##" />
         </Publisher>
         <Logger class="File">
             <Param name="Path" value="/home/zz/peach/ftplogs"/>
